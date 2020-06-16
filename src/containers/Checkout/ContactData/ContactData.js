@@ -14,72 +14,72 @@ class ContactData extends Component {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Your name"
+          placeholder: "Your name",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
 
       street: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Street"
+          placeholder: "Street",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
 
       zipCode: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "ZIP Code"
+          placeholder: "ZIP Code",
         },
         value: "",
         validation: {
           required: true,
           minLength: 5,
-          maxLength: 5
+          maxLength: 5,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
 
       country: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Country"
+          placeholder: "Country",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
 
       email: {
         elementType: "input",
         elementConfig: {
           type: "email",
-          placeholder: "Your E-mail"
+          placeholder: "Your E-mail",
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
 
       deliveryMethod: {
@@ -87,22 +87,22 @@ class ContactData extends Component {
         elementConfig: {
           options: [
             { value: "fastest", displayValue: "Fastest" },
-            { value: "cheapest", displayValue: "Cheapest" }
-          ]
+            { value: "cheapest", displayValue: "Cheapest" },
+          ],
         },
         value: "",
-        valid: true
-      }
+        valid: true,
+      },
     },
     loading: false,
-    formIsValid: false
+    formIsValid: false,
   };
 
   orderHandler = event => {
     event.preventDefault();
 
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const formData = {};
@@ -116,14 +116,14 @@ class ContactData extends Component {
     const orders = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      orderData: formData
+      orderData: formData,
     };
     axios
       .post("/orders.json", orders)
       .then(response => {
         // console.log(response);
         this.setState({
-          loading: false
+          loading: false,
         });
 
         this.props.history.push("/");
@@ -131,7 +131,7 @@ class ContactData extends Component {
       .catch(error => {
         // console.log(error);
         this.setState({
-          loading: false
+          loading: false,
         });
       });
   };
@@ -159,11 +159,11 @@ class ContactData extends Component {
 
     // Remember that nested objects are not copied deeply
     const updatedOrderForm = {
-      ...this.state.orderForm
+      ...this.state.orderForm,
     };
 
     const updatedFormElement = {
-      ...updatedOrderForm[inputIdentifier]
+      ...updatedOrderForm[inputIdentifier],
     };
 
     updatedFormElement.value = event.target.value;
@@ -185,7 +185,7 @@ class ContactData extends Component {
 
     this.setState({
       orderForm: updatedOrderForm,
-      formIsValid: formIsValid
+      formIsValid: formIsValid,
     });
   };
 
@@ -194,7 +194,7 @@ class ContactData extends Component {
     for (let key in this.state.orderForm) {
       formElementsArray.push({
         id: key,
-        config: this.state.orderForm[key]
+        config: this.state.orderForm[key],
       });
     }
 
