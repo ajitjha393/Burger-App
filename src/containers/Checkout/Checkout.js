@@ -6,6 +6,8 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 
 import ContactData from './ContactData/ContactData'
 
+import { connect } from 'react-redux'
+
 class Checkout extends Component {
 	// Because i needed Component will mount
 
@@ -21,31 +23,26 @@ class Checkout extends Component {
 		return (
 			<div>
 				<CheckoutSummary
-					ingredients={this.state.ingredients}
+					ingredients={this.props.ingredients}
 					checkoutCancelled={this.checkoutCancelledHandler}
 					checkoutContinued={this.checkoutContinuedHandler}
 				/>
-				{/* 
-        <Route
-          path={this.props.match.path + "/contact-data"}
-          component={ContactData}
-        /> */}
 
 				{/* Hack to pass data to the compnent */}
 
 				<Route
 					path={this.props.match.path + '/contact-data'}
-					render={(props) => (
-						<ContactData
-							ingredients={this.state.ingredients}
-							price={this.state.totalPrice}
-							{...props}
-						/>
-					)}
+					component={ContactData}
 				/>
 			</div>
 		)
 	}
 }
 
-export default Checkout
+const mapStateToProps = (state) => {
+	return {
+		ingredients: state.ingredients,
+	}
+}
+
+export default connect(mapStateToProps)(Checkout)
