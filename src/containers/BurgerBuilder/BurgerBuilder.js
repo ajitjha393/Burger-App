@@ -36,20 +36,21 @@ class BurgerBuilder extends Component {
 	}
 
 	componentDidMount() {
-		axios
-			.get(
-				'https://react-burger-app-11993.firebaseio.com/ingredients.json'
-			)
-			.then((response) => {
-				this.setState({
-					ingredients: response.data,
-				})
-			})
-			.catch((error) => {
-				this.setState({
-					error: true,
-				})
-			})
+		// Will add this part again after learning async state handlng using redux
+		// axios
+		// 	.get(
+		// 		'https://react-burger-app-11993.firebaseio.com/ingredients.json'
+		// 	)
+		// 	.then((response) => {
+		// 		this.setState({
+		// 			ingredients: response.data,
+		// 		})
+		// 	})
+		// 	.catch((error) => {
+		// 		this.setState({
+		// 			error: true,
+		// 		})
+		// 	})
 	}
 
 	updatePurchaseState = (ingredients) => {
