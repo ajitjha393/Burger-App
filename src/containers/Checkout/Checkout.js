@@ -9,33 +9,6 @@ import ContactData from './ContactData/ContactData'
 class Checkout extends Component {
 	// Because i needed Component will mount
 
-	state = {
-		ingredients: {
-			salad: 0,
-			cheese: 0,
-			meat: 0,
-			bacon: 0,
-		},
-		totalPrice: 0,
-	}
-
-	componentDidMount() {
-		const query = new URLSearchParams(this.props.location.search)
-
-		let price = 0
-
-		const ingredients = {}
-		for (let param of query.entries()) {
-			// ['salad' , '1']
-
-			if (param[0] === 'price') {
-				price = param[1]
-			} else ingredients[param[0]] = +param[1]
-		}
-
-		this.setState({ ingredients: ingredients, totalPrice: price })
-	}
-
 	checkoutCancelledHandler = () => {
 		this.props.history.goBack()
 	}
