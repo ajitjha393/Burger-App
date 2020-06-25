@@ -28,20 +28,7 @@ class BurgerBuilder extends Component {
 
 	componentDidMount() {
 		// Will add this part again after learning async state handlng using redux
-		// axios
-		// 	.get(
-		// 		'https://react-burger-app-11993.firebaseio.com/ingredients.json'
-		// 	)
-		// 	.then((response) => {
-		// 		this.setState({
-		// 			ingredients: response.data,
-		// 		})
-		// 	})
-		// 	.catch((error) => {
-		// 		this.setState({
-		// 			error: true,
-		// 		})
-		// 	})
+		this.props.onInitIngredients()
 	}
 
 	updatePurchaseState = (ingredients) => {
@@ -53,51 +40,6 @@ class BurgerBuilder extends Component {
 
 		// console.log(sum);
 	}
-
-	// State must be updated in immutable way (very imp)
-	// addIngredientHandler = (type) => {
-	// 	const oldCount = this.state.ingredients[type]
-	// 	const updatedCount = oldCount + 1
-
-	// 	const updatedIngredients = {
-	// 		...this.state.ingredients,
-	// 	}
-
-	// 	updatedIngredients[type] = updatedCount
-
-	// 	const priceAddition = INGREDIENT_PRICES[type]
-
-	// 	const oldPrice = this.state.totalPrice
-	// 	const newPrice = oldPrice + priceAddition
-
-	// 	this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
-
-	// 	this.updatePurchaseState(updatedIngredients)
-	// }
-
-	// removeIngredientHandler = (type) => {
-	// 	const oldCount = this.state.ingredients[type]
-
-	// 	if (oldCount === 0) {
-	// 		return
-	// 	}
-	// 	const updatedCount = oldCount - 1
-
-	// 	const updatedIngredients = {
-	// 		...this.state.ingredients,
-	// 	}
-
-	// 	updatedIngredients[type] = updatedCount
-
-	// 	const priceDeduction = INGREDIENT_PRICES[type]
-
-	// 	const oldPrice = this.state.totalPrice
-	// 	const newPrice = oldPrice - priceDeduction
-
-	// 	this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
-
-	// 	this.updatePurchaseState(updatedIngredients)
-	// }
 
 	purchaseHandler = () => {
 		this.setState({
@@ -138,7 +80,7 @@ class BurgerBuilder extends Component {
 			)
 		}
 
-		let burger = this.state.error ? (
+		let burger = this.props.error ? (
 			<p>Ingredients cant be loaded...</p>
 		) : (
 			<Spinner />
@@ -179,6 +121,7 @@ const mapStateToProps = (state) => {
 	return {
 		ingredients: state.ingredients,
 		price: state.totalPrice,
+		error: state.error,
 	}
 }
 
@@ -188,6 +131,8 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(burgerBuilderActions.addIngredient(ing)),
 		onIngredientRemoved: (ing) =>
 			dispatch(burgerBuilderActions.removeIngredient(ing)),
+		onInitIngredients: () =>
+			dispatch(burgerBuilderActions.initIngredients()),
 	}
 }
 
