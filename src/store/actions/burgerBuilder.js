@@ -23,12 +23,22 @@ const setIngredients = (ingredients) => {
 	}
 }
 
+export const fetchIngredientsFailed = () => {
+	return {
+		type: actionTypes.FETCH_INGREDIENTS_FAILED,
+	}
+}
+
 export const initIngredients = () => {
 	return async (dispatch) => {
-		const response = await axios.get(
-			'https://react-burger-app-11993.firebaseio.com/ingredients.json'
-		)
-		const ingredients = response.data
-		return dispatch(setIngredients(ingredients))
+		try {
+			const response = await axios.get(
+				'https://react-burger-app-11993.firebaseio.com/ingredients.json'
+			)
+			const ingredients = response.data
+			return dispatch(setIngredients(ingredients))
+		} catch (err) {
+			return dispatch(fetchIngredientsFailed())
+		}
 	}
 }
