@@ -18,7 +18,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 
 import { connect } from 'react-redux'
 
-import * as actionTypes from '../../store/actions/actionTypes'
+import * as burgerBuilderActions from '../../store/actions/index'
 
 // Remeber setState does not work instantaneously
 
@@ -193,12 +193,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onIngredientAdded: (ing) =>
-			dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientType: ing }),
+			dispatch(burgerBuilderActions.addIngredient(ing)),
 		onIngredientRemoved: (ing) =>
-			dispatch({
-				type: actionTypes.REMOVE_INGREDIENT,
-				ingredientType: ing,
-			}),
+			dispatch(burgerBuilderActions.removeIngredient(ing)),
 	}
 }
 
