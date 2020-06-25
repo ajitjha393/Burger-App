@@ -10,8 +10,6 @@ import Modal from '../../components/UI/Modal/Modal'
 
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 
-import axios from '../../axios-orders'
-
 import Spinner from '../../components/UI/Spinner/Spinner'
 
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
@@ -24,11 +22,7 @@ import * as burgerBuilderActions from '../../store/actions/index'
 
 class BurgerBuilder extends Component {
 	state = {
-		// ingredients: null,
-		// totalPrice: 4,
 		purchasing: false,
-		loading: false,
-		error: false,
 	}
 
 	componentDidMount() {
@@ -141,9 +135,6 @@ class BurgerBuilder extends Component {
 					purchaseContinued={this.purchaseContinueHandler}
 				/>
 			)
-		}
-		if (this.state.loading) {
-			orderSummary = <Spinner />
 		}
 
 		let burger = this.state.error ? (
