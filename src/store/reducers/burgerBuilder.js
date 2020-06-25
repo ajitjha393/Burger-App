@@ -14,11 +14,16 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-	const newState = {
-		...state,
-		ingredients: {
-			...state.ingredients,
-		},
+	let newState
+	if (state.ingredients) {
+		newState = {
+			...state,
+			ingredients: {
+				...state.ingredients,
+			},
+		}
+	} else {
+		newState = { ...state }
 	}
 	switch (action.type) {
 		case actionTypes.ADD_INGREDIENT:
@@ -29,6 +34,15 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.REMOVE_INGREDIENT:
 			newState.ingredients[action.ingredientType] -= 1
 			newState.totalPrice -= INGREDIENT_PRICES[action.ingredientType]
+			break
+
+		case actionTypes.SET_INGREDIENT:
+			newState.ingredients = action.ingredients
+			newState.error = false
+			break
+
+		case actionTypes.FETCH_INGREDIENTS_FAILED:
+			newState.error = true
 			break
 
 		default:
