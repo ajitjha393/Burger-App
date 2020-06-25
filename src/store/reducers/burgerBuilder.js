@@ -37,7 +37,12 @@ const reducer = (state = initialState, action) => {
 			break
 
 		case actionTypes.SET_INGREDIENT:
-			newState.ingredients = action.ingredients
+			newState.ingredients = {
+				salad: action.ingredients.salad,
+				bacon: action.ingredients.bacon,
+				cheese: action.ingredients.cheese,
+				meat: action.ingredients.meat,
+			}
 			newState.error = false
 			break
 
