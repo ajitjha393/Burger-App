@@ -20,19 +20,21 @@ const reducer = (state = initialState, action) => {
 			}
 			return {
 				...state,
-				loading: true,
+				loading: false,
 				orders: [...state.orders, newOrder],
 			}
 
 		case actionTypes.PURCHASE_BURGER_FAIL:
 			return {
 				...state,
-				loading: true,
+				loading: false,
 			}
 
 		default:
 			break
 	}
+
+	return state
 }
 
 export default reducer
