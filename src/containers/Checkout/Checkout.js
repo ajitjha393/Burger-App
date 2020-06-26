@@ -8,14 +8,8 @@ import ContactData from './ContactData/ContactData'
 
 import { connect } from 'react-redux'
 
-import * as actions from '../../store/actions/index'
-
 class Checkout extends Component {
 	// Because i needed Component will mount
-
-	componentDidMount() {
-		this.props.onInitPurchase()
-	}
 
 	checkoutCancelledHandler = () => {
 		this.props.history.goBack()
@@ -61,10 +55,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-const mapDispatchToProps = (dispath) => {
-	return {
-		onInitPurchase: () => dispath(actions.purchaseInit()),
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout)
+export default connect(mapStateToProps)(Checkout)
