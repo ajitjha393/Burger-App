@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary'
 
@@ -20,15 +20,21 @@ class Checkout extends Component {
 	}
 
 	render() {
-		return (
-			<div>
+		let summary = <Redirect to="/" />
+
+		if (this.props.ingredients) {
+			summary = (
 				<CheckoutSummary
 					ingredients={this.props.ingredients}
 					checkoutCancelled={this.checkoutCancelledHandler}
 					checkoutContinued={this.checkoutContinuedHandler}
 				/>
+			)
+		}
 
-				{/* Hack to pass data to the compnent */}
+		return (
+			<div>
+				{summary}
 
 				<Route
 					path={this.props.match.path + '/contact-data'}
