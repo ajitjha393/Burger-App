@@ -11,7 +11,7 @@ import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 
 import { connect } from 'react-redux'
 
-import { purchaseBurgerStart } from '../../../store/actions/index'
+import { purchaseBurger } from '../../../store/actions/index'
 
 class ContactData extends Component {
 	state = {
@@ -100,7 +100,6 @@ class ContactData extends Component {
 				valid: true,
 			},
 		},
-		loading: false,
 		formIsValid: false,
 	}
 
@@ -210,7 +209,7 @@ class ContactData extends Component {
 				</Button>
 			</form>
 		)
-		if (this.state.loading) {
+		if (this.props.loading) {
 			form = <Spinner />
 		}
 		return (
@@ -226,12 +225,13 @@ const mapStateToProps = (state) => {
 	return {
 		ingredients: state.ingredients,
 		price: state.totalPrice,
+		loading: state.loading,
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onOrderBurger: (orderData) => dispatch(purchaseBurgerStart(orderData)),
+		onOrderBurger: (orderData) => dispatch(purchaseBurger(orderData)),
 	}
 }
 
