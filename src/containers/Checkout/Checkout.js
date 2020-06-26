@@ -8,8 +8,14 @@ import ContactData from './ContactData/ContactData'
 
 import { connect } from 'react-redux'
 
+import * as actions from '../../store/actions/index'
+
 class Checkout extends Component {
 	// Because i needed Component will mount
+
+	componentDidMount() {
+		this.props.onInitPurchase()
+	}
 
 	checkoutCancelledHandler = () => {
 		this.props.history.goBack()
@@ -23,32 +29,42 @@ class Checkout extends Component {
 		let summary = <Redirect to="/" />
 
 		if (this.props.ingredients) {
+			const purchasedRedirect = this.props.purchased ? (
+				<Redirect to="/" />
+			) : null
+
 			summary = (
-				<CheckoutSummary
-					ingredients={this.props.ingredients}
-					checkoutCancelled={this.checkoutCancelledHandler}
-					checkoutContinued={this.checkoutContinuedHandler}
-				/>
+				<div>
+					{purchasedRedirect}
+					<CheckoutSummary
+						ingredients={this.props.ingredients}
+						checkoutCancelled={this.checkoutCancelledHandler}
+						checkoutContinued={this.checkoutContinuedHandler}
+					/>
+
+					<Route
+						path={this.props.match.path + '/contact-data'}
+						component={ContactData}
+					/>
+				</div>
 			)
 		}
 
-		return (
-			<div>
-				{summary}
-
-				<Route
-					path={this.props.match.path + '/contact-data'}
-					component={ContactData}
-				/>
-			</div>
-		)
+		return summary
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
 		ingredients: state.burgerBuilder.ingredients,
+		purchased: state.order.purchased,
 	}
 }
 
-export default connect(mapStateToProps)(Checkout)
+const mapDispatchToProps = (dispath) => {
+	return {
+		onInitPurchase: () => dispath(actions.purchaseInit()),
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout)
