@@ -11,6 +11,8 @@ import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 
 import { connect } from 'react-redux'
 
+import { purchaseBurgerStart } from '../../../store/actions/index'
+
 class ContactData extends Component {
 	state = {
 		orderForm: {
@@ -113,11 +115,13 @@ class ContactData extends Component {
 			].value
 		}
 
-		const orders = {
+		const order = {
 			ingredients: this.props.ingredients,
 			price: this.props.price,
 			orderData: formData,
 		}
+
+		this.props.onOrderBurger(order)
 	}
 
 	checkValidity = (value, rules = {}) => {
@@ -225,4 +229,13 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps)(withErrorHandler(ContactData, axios))
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onOrderBurger: (orderData) => dispatch(purchaseBurgerStart(orderData)),
+	}
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withErrorHandler(ContactData, axios))
