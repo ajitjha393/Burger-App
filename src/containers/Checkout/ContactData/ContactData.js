@@ -7,6 +7,8 @@ import Input from '../../../components/UI/Input/Input'
 
 import classes from './ContactData.module.css'
 
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
+
 import { connect } from 'react-redux'
 
 class ContactData extends Component {
@@ -243,4 +245,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps)(ContactData)
+export default connect(mapStateToProps)(withErrorHandler(ContactData, axios))
