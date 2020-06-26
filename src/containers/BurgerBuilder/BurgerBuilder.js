@@ -16,7 +16,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 
 import { connect } from 'react-redux'
 
-import * as burgerBuilderActions from '../../store/actions/index'
+import * as actions from '../../store/actions/index'
 import axios from '../../axios-orders'
 
 // Remeber setState does not work instantaneously
@@ -54,7 +54,7 @@ class BurgerBuilder extends Component {
 	}
 
 	purchaseContinueHandler = () => {
-		/* No need of using query parmas , state is passed using redux */
+		this.props.onInitPurchase()
 		this.props.history.push('/checkout')
 	}
 
@@ -127,12 +127,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onIngredientAdded: (ing) =>
-			dispatch(burgerBuilderActions.addIngredient(ing)),
-		onIngredientRemoved: (ing) =>
-			dispatch(burgerBuilderActions.removeIngredient(ing)),
-		onInitIngredients: () =>
-			dispatch(burgerBuilderActions.initIngredients()),
+		onIngredientAdded: (ing) => dispatch(actions.addIngredient(ing)),
+		onIngredientRemoved: (ing) => dispatch(actions.removeIngredient(ing)),
+		onInitIngredients: () => dispatch(actions.initIngredients()),
+		onInitPurchase: () => dispatch(actions.purchaseInit()),
 	}
 }
 
