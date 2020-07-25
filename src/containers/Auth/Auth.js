@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
 
+import Spinner from '../../components/UI/Spinner/Spinner'
+
 import classes from './Auth.module.css'
 
 import { auth } from '../../store/actions/index'
@@ -115,7 +117,7 @@ class Auth extends Component {
 			})
 		}
 
-		const form = formElementsArray.map(({ id, config }) => {
+		let form = formElementsArray.map(({ id, config }) => {
 			return (
 				<Input
 					key={id}
@@ -129,6 +131,10 @@ class Auth extends Component {
 				/>
 			)
 		})
+
+		if (this.props.loading) {
+			form = <Spinner />
+		}
 
 		return (
 			<div className={classes.Auth}>
@@ -144,6 +150,12 @@ class Auth extends Component {
 	}
 }
 
+const mapStateToProps = (state) => {
+	return {
+		loading: state.auth.loading,
+	}
+}
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onAuth: (email, password, isSignUp) =>
@@ -151,4 +163,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(Auth)
+export default connect(mapStateToProps, mapDispatchToProps)(Auth)
