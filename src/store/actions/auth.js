@@ -24,19 +24,22 @@ export const authFail = (error) => {
 	}
 }
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignUp) => {
 	return async (dispatch) => {
 		dispatch(authStart())
 
+		let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`
+
+		if (!isSignUp) {
+			url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`
+		}
+
 		try {
-			const res = await axios.post(
-				`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
-				{
-					email,
-					password,
-					returnSecureToken: true,
-				}
-			)
+			const res = await axios.post(url, {
+				email,
+				password,
+				returnSecureToken: true,
+			})
 			console.log(res)
 
 			dispatch(authSuccess(res.data))
