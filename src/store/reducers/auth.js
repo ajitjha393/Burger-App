@@ -35,6 +35,7 @@ const reducer = (state = initialState, action) => {
 		case AUTH_LOGOUT:
 			newState.userId = null
 			newState.token = null
+			break
 
 		default:
 			break
