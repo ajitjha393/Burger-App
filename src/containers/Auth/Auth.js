@@ -7,6 +7,8 @@ import Spinner from '../../components/UI/Spinner/Spinner'
 
 import classes from './Auth.module.css'
 
+import { Redirect } from 'react-router-dom'
+
 import { auth } from '../../store/actions/index'
 
 import { connect } from 'react-redux'
@@ -142,8 +144,14 @@ class Auth extends Component {
 			errorMessage = <p>{this.props.error.message}</p>
 		}
 
+		let authRedirect = null
+		if (this.props.isAuthenticated) {
+			authRedirect = <Redirect />
+		}
+
 		return (
 			<div className={classes.Auth}>
+				{authRedirect}
 				{errorMessage}
 				<form onSubmit={this.submitHandler}>
 					{form}
@@ -161,6 +169,7 @@ const mapStateToProps = (state) => {
 	return {
 		loading: state.auth.loading,
 		error: state.auth.error,
+		isAuthenticated: state.auth.idToken,
 	}
 }
 
