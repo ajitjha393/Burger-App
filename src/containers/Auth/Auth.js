@@ -9,7 +9,7 @@ import classes from './Auth.module.css'
 
 import { Redirect } from 'react-router-dom'
 
-import { auth } from '../../store/actions/index'
+import { auth, setAuthRedirectPath } from '../../store/actions/index'
 
 import { connect } from 'react-redux'
 
@@ -48,6 +48,12 @@ class Auth extends Component {
 		},
 
 		isSignUp: true,
+	}
+
+	componentDidMount() {
+		if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+			this.props.onSetAuthRedirectPath()
+		}
 	}
 
 	checkValidity = (value, rules = {}) => {
@@ -146,7 +152,7 @@ class Auth extends Component {
 
 		let authRedirect = null
 		if (this.props.isAuthenticated) {
-			authRedirect = <Redirect />
+			authRedirect = <Redirect to={this.props.authRedirectPath} />
 		}
 
 		return (
@@ -170,6 +176,8 @@ const mapStateToProps = (state) => {
 		loading: state.auth.loading,
 		error: state.auth.error,
 		isAuthenticated: state.auth.idToken,
+		buildingBurger: state.burgerBuilder.building,
+		authRedirectPath: state.burgerBuilder.authRedirectPath,
 	}
 }
 
@@ -177,6 +185,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		onAuth: (email, password, isSignUp) =>
 			dispatch(auth(email, password, isSignUp)),
+
+		onSetAuthRedirectPath: () => dispatch(setAuthRedirectPath('/')),
 	}
 }
 
