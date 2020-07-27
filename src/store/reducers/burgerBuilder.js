@@ -11,6 +11,8 @@ const initialState = {
 	ingredients: null,
 	totalPrice: 4,
 	error: false,
+	building: false,
+	authRedirectPath: '/',
 }
 
 const reducer = (state = initialState, action) => {
@@ -29,11 +31,13 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.ADD_INGREDIENT:
 			newState.ingredients[action.ingredientType] += 1
 			newState.totalPrice += INGREDIENT_PRICES[action.ingredientType]
+			newState.building = true
 			break
 
 		case actionTypes.REMOVE_INGREDIENT:
 			newState.ingredients[action.ingredientType] -= 1
 			newState.totalPrice -= INGREDIENT_PRICES[action.ingredientType]
+			newState.building = true
 			break
 
 		case actionTypes.SET_INGREDIENT:
@@ -45,10 +49,15 @@ const reducer = (state = initialState, action) => {
 			}
 			newState.error = false
 			newState.totalPrice = 4
+			newState.building = false
 			break
 
 		case actionTypes.FETCH_INGREDIENTS_FAILED:
 			newState.error = true
+			break
+
+		case actionTypes.SET_AUTH_REDIRECT_PATH:
+			newState.authRedirectPath = action.path
 			break
 
 		default:
