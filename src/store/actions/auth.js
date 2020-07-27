@@ -27,7 +27,8 @@ export const authFail = (error) => {
 
 export const logout = () => {
 	localStorage.removeItem('token')
-	localStorage.removeItem('expirationTime')
+	localStorage.removeItem('expirationDate')
+	localStorage.removeItem('userId')
 	return {
 		type: actionTypes.AUTH_LOGOUT,
 	}
@@ -59,18 +60,44 @@ export const auth = (email, password, isSignUp) => {
 			})
 			console.log(res)
 
-			const expirationTime = new Date(
+			const expirationDate = new Date(
 				new Date().getTime() + res.data.expiresIn * 1000
 			)
 
 			localStorage.setItem('token', res.data.idToken)
-			localStorage.setItem('expirationTime', expirationTime)
+			localStorage.setItem('expirationDate', expirationDate)
+			localStorage.setItem('userId', res.data.localId)
 
 			dispatch(authSuccess(res.data.idToken, res.data.localId))
 			dispatch(checkAutoTimeout(res.data.expiresIn))
 		} catch (err) {
 			console.log(err)
 			dispatch(authFail(err.response.data.error))
+		}
+	}
+}
+
+export const authCheckState = () => {
+	return (dispatch) => {
+		const token = localStorage.getItem('token')
+
+		if (!token) {
+			dispatch(logout())
+		} else {
+			const expirationDate = localStorage.getItem('expirationDate')
+			if (expirationDate > new Date()) {
+				const userId = localStorage.getItem('userId')
+				dispatch(authSuccess(token, userId))
+				// This sets up the timer to logout if we are still using the app
+
+				const remainingExpirationTime =
+					expirationDate.getSeconds() - new Date().getSeconds()
+
+				// Will have to pass the time after which the storage must be clear
+				dispatch(checkAutoTimeout(remainingExpirationTime))
+			} else {
+				dispatch(logout())
+			}
 		}
 	}
 }
