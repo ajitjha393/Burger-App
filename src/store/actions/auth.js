@@ -80,22 +80,28 @@ export const auth = (email, password, isSignUp) => {
 export const authCheckState = () => {
 	return (dispatch) => {
 		const token = localStorage.getItem('token')
-
+		// console.log(token)
 		if (!token) {
 			dispatch(logout())
 		} else {
-			const expirationDate = localStorage.getItem('expirationDate')
+			const expirationDate = new Date(
+				localStorage.getItem('expirationDate')
+			)
+
 			if (expirationDate > new Date()) {
+				console.log('Hiiii')
 				const userId = localStorage.getItem('userId')
 				dispatch(authSuccess(token, userId))
 				// This sets up the timer to logout if we are still using the app
 
 				const remainingExpirationTime =
-					expirationDate.getSeconds() - new Date().getSeconds()
+					(expirationDate.getTime() - new Date().getTime()) / 1000
 
 				// Will have to pass the time after which the storage must be clear
+				console.log(remainingExpirationTime)
 				dispatch(checkAutoTimeout(remainingExpirationTime))
 			} else {
+				console.log('logging out')
 				dispatch(logout())
 			}
 		}
