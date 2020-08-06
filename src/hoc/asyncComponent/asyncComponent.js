@@ -13,8 +13,8 @@ const asyncComponent = (importComponent) => {
 		}
 
 		render() {
-			const loadedComponent = this.state.component
-			return loadedComponent ? <loadedComponent {...this.props} /> : null
+			const LoadedComponent = this.state.component
+			return LoadedComponent ? <LoadedComponent {...this.props} /> : null
 		}
 	}
 }
