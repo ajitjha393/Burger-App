@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Aux from '../../hoc/Aux/Aux'
 
@@ -21,17 +21,15 @@ import axios from '../../axios-orders'
 
 // Remeber setState does not work instantaneously
 
-class BurgerBuilder extends Component {
-	state = {
-		purchasing: false,
-	}
+const BurgerBuilder = (props) => {
+	const [purchasing, setPurchasing] = useState(false)
 
-	componentDidMount() {
-		// Will add this part again after learning async state handlng using redux
-		this.props.onInitIngredients()
-	}
+	const { onInitIngredients } = props
+	useEffect(() => {
+		onInitIngredients()
+	}, [onInitIngredients])
 
-	updatePurchaseState = (ingredients) => {
+	const updatePurchaseState = (ingredients) => {
 		const sum = Object.keys(ingredients).reduce((sum, curr) => {
 			return sum + ingredients[curr]
 		}, 0)
@@ -41,86 +39,75 @@ class BurgerBuilder extends Component {
 		// console.log(sum);
 	}
 
-	purchaseHandler = () => {
-		if (this.props.isAuthenticated) {
-			this.setState({
-				purchasing: true,
-			})
+	const purchaseHandler = () => {
+		if (props.isAuthenticated) {
+			setPurchasing(true)
 		} else {
-			this.props.onSetAuthRedirectPath('/checkout')
-			this.props.history.push('/auth')
+			props.onSetAuthRedirectPath('/checkout')
+			props.history.push('/auth')
 		}
 	}
 
-	purchaseCancelHandler = () => {
-		this.setState({
-			purchasing: false,
-		})
+	const purchaseCancelHandler = () => {
+		setPurchasing(false)
 	}
 
-	purchaseContinueHandler = () => {
-		this.props.onInitPurchase()
-		this.props.history.push('/checkout')
+	const purchaseContinueHandler = () => {
+		props.onInitPurchase()
+		props.history.push('/checkout')
 	}
 
-	render() {
-		const disabledInfo = {
-			...this.props.ingredients,
-		}
+	const disabledInfo = {
+		...props.ingredients,
+	}
 
-		for (let key in disabledInfo) {
-			disabledInfo[key] = disabledInfo[key] <= 0
-		}
+	for (let key in disabledInfo) {
+		disabledInfo[key] = disabledInfo[key] <= 0
+	}
 
-		let orderSummary = null
+	let orderSummary = null
 
-		if (this.props.ingredients) {
-			orderSummary = (
-				<OrderSummary
-					ingredients={this.props.ingredients}
-					price={this.props.price}
-					purchaseCancelled={this.purchaseCancelHandler}
-					purchaseContinued={this.purchaseContinueHandler}
-				/>
-			)
-		}
-
-		let burger = this.props.error ? (
-			<p>Ingredients cant be loaded...</p>
-		) : (
-			<Spinner />
+	if (props.ingredients) {
+		orderSummary = (
+			<OrderSummary
+				ingredients={props.ingredients}
+				price={props.price}
+				purchaseCancelled={purchaseCancelHandler}
+				purchaseContinued={purchaseContinueHandler}
+			/>
 		)
+	}
 
-		if (this.props.ingredients) {
-			burger = (
-				<Aux>
-					<Burger ingredients={this.props.ingredients} />
-					<BuildControls
-						ingredientAdded={this.props.onIngredientAdded}
-						ingredientRemoved={this.props.onIngredientRemoved}
-						disabled={disabledInfo}
-						purchasable={this.updatePurchaseState(
-							this.props.ingredients
-						)}
-						isAuth={this.props.isAuthenticated}
-						price={this.props.price}
-						ordered={this.purchaseHandler}
-					/>
-				</Aux>
-			)
-		}
-		return (
+	let burger = props.error ? (
+		<p>Ingredients cant be loaded...</p>
+	) : (
+		<Spinner />
+	)
+
+	if (props.ingredients) {
+		burger = (
 			<Aux>
-				<Modal
-					show={this.state.purchasing}
-					modalClosed={this.purchaseCancelHandler}
-				>
-					{orderSummary}
-				</Modal>
-				{burger}
+				<Burger ingredients={props.ingredients} />
+				<BuildControls
+					ingredientAdded={props.onIngredientAdded}
+					ingredientRemoved={props.onIngredientRemoved}
+					disabled={disabledInfo}
+					purchasable={updatePurchaseState(props.ingredients)}
+					isAuth={props.isAuthenticated}
+					price={props.price}
+					ordered={purchaseHandler}
+				/>
 			</Aux>
 		)
 	}
+	return (
+		<Aux>
+			<Modal show={purchasing} modalClosed={purchaseCancelHandler}>
+				{orderSummary}
+			</Modal>
+			{burger}
+		</Aux>
+	)
 }
 
 const mapStateToProps = (state) => {
