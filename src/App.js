@@ -5,17 +5,9 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import Layout from './hoc/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
 
-// import Orders from './containers/Orders/Orders'
-
-// import Checkout from './containers/Checkout/Checkout'
-
-// import Auth from './containers/Auth/Auth'
-
 import Logout from './containers/Auth/Logout/Logout'
 
 import { connect } from 'react-redux'
-
-// import asyncComponent from './hoc/asyncComponent/asyncComponent'
 
 import * as actions from './store/actions/index'
 
