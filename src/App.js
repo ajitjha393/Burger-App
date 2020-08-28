@@ -31,10 +31,8 @@ const asyncAuth = asyncComponent(() => {
 	return import('./containers/Auth/Auth')
 })
 
-const App = (props) => {
-	useEffect(() => {
-		props.onTryAutoSignup()
-	}, [])
+const App = ({ onTryAutoSignup, isAuthenticated }) => {
+	useEffect(onTryAutoSignup, [])
 
 	let routes = (
 		<Switch>
@@ -44,7 +42,7 @@ const App = (props) => {
 		</Switch>
 	)
 
-	if (this.props.isAuthenticated) {
+	if (isAuthenticated) {
 		routes = (
 			<Switch>
 				<Route path="/checkout" component={asyncCheckout} />
