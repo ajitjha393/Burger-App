@@ -7,7 +7,9 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 const Logout = ({ onLogout }) => {
-	useEffect(() => onLogout(), [onLogout])
+	useEffect(() => {
+		onLogout()
+	}, [onLogout])
 
 	return <Redirect to="/" />
 }
